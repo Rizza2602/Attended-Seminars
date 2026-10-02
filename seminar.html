@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminars | ST1: Seminars and Tours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #1e293b;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 75px;
+            padding: 0 8%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            z-index: 100;
+        }
+
+        /* LOGO HOLDER */
+
+        .logo-holder {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.06);
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            overflow: hidden;
+
+            text-decoration: none;
+        }
+
+        .logo-holder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* NAVIGATION */
+
+        .navigation {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navigation a {
+            color: #cbd5e1;
+            text-decoration: none;
+
+            padding: 10px 16px;
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .navigation a:hover {
+            color: white;
+            background: rgba(255,255,255,0.12);
+        }
+
+        .navigation .active {
+            color: white;
+            background: rgba(99,102,241,0.18);
+        }
+
+        /* ================= MAIN ================= */
+
+        main {
+            min-height: 100vh;
+
+            position: relative;
+            overflow: hidden;
+
+            padding-top: 75px;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(99,102,241,0.35),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 75%,
+                    rgba(6,182,212,0.25),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1e1b4b
+                );
+        }
+
+        /* ================= DECORATIVE CIRCLES ================= */
+
+        .circle {
+            position: absolute;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            pointer-events: none;
+        }
+
+        .circle.one {
+            width: 400px;
+            height: 400px;
+
+            top: -150px;
+            right: -100px;
+        }
+
+        .circle.two {
+            width: 300px;
+            height: 300px;
+
+            bottom: -120px;
+            left: -80px;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .container {
+            position: relative;
+            z-index: 2;
+
+            max-width: 1150px;
+
+            margin: auto;
+
+            padding: 75px 25px 60px;
+        }
+
+        /* ================= PAGE INTRO ================= */
+
+        .heading {
+            text-align: center;
+
+            max-width: 800px;
+
+            margin: 0 auto 55px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 16px;
+
+            border-radius: 30px;
+
+            background: rgba(99,102,241,0.18);
+
+            border: 1px solid rgba(129,140,248,0.4);
+
+            color: #c7d2fe;
+
+            font-size: 13px;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            color: white;
+
+            font-size: clamp(40px, 5vw, 58px);
+
+            line-height: 1.05;
+
+            margin-bottom: 22px;
+        }
+
+        .heading h1 span {
+            background:
+                linear-gradient(
+                    90deg,
+                    #818cf8,
+                    #22d3ee
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .heading p {
+            color: #cbd5e1;
+
+            font-size: 17px;
+
+            line-height: 1.7;
+
+            max-width: 700px;
+
+            margin: auto;
+        }
+
+        /* ================= STUDENT INFO ================= */
+
+        .student-info {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 25px;
+        }
+
+        .student-info div {
+            padding: 8px 14px;
+
+            border-radius: 8px;
+
+            background: rgba(255,255,255,0.06);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            color: #cbd5e1;
+
+            font-size: 12px;
+        }
+
+        .student-info strong {
+            color: white;
+        }
+
+        /* ================= SEMINAR GRID ================= */
+
+        .seminar-list {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 24px;
+        }
+
+        /* ================= CARD ================= */
+
+        .seminar-card {
+            position: relative;
+
+            padding: 30px;
+
+            border-radius: 16px;
+
+            background: rgba(255,255,255,0.06);
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            overflow: hidden;
+
+            transition: 0.3s;
+        }
+
+        .seminar-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #6366f1,
+                    #06b6d4
+                );
+        }
+
+        .seminar-card:hover {
+            transform: translateY(-7px);
+
+            background: rgba(255,255,255,0.10);
+
+            border-color:
+                rgba(129,140,248,0.45);
+
+            box-shadow:
+                0 18px 35px rgba(0,0,0,0.22);
+        }
+
+        /* ================= CARD TOP ================= */
+
+        .card-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+        }
+
+        .number {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #06b6d4
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+        .mode {
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(6,182,212,0.10);
+
+            border:
+                1px solid rgba(6,182,212,0.25);
+
+            color: #67e8f9;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        /* ================= CARD CONTENT ================= */
+
+        .seminar-card h2 {
+            color: white;
+
+            font-size: 21px;
+
+            line-height: 1.45;
+
+            margin-bottom: 13px;
+        }
+
+        .seminar-card p {
+            color: #cbd5e1;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            margin-bottom: 25px;
+        }
+
+        /* ================= VIEW BUTTON ================= */
+
+        .view-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 12px 18px;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #06b6d4
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            box-shadow:
+                0 8px 22px rgba(79,70,229,0.25);
+
+            transition: 0.3s;
+        }
+
+        .view-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 28px rgba(79,70,229,0.4);
+        }
+
+        .view-btn span {
+            font-size: 17px;
+        }
+
+        /* ================= BACK ================= */
+
+        .back-container {
+            text-align: center;
+
+            margin-top: 45px;
+        }
+
+        .back-btn {
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            color: #22d3ee;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            padding: 22px;
+
+            text-align: center;
+
+            background: #0f172a;
+
+            border-top:
+                1px solid rgba(255,255,255,0.08);
+
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        /* ================= TABLET ================= */
+
+        @media (max-width: 750px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            .navigation a {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .seminar-list {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding:
+                    60px 25px 50px;
+            }
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 450px) {
+
+            .container {
+                padding:
+                    50px 18px 45px;
+            }
+
+            .heading h1 {
+                font-size: 34px;
+            }
+
+            .heading p {
+                font-size: 15px;
+            }
+
+            .seminar-card {
+                padding: 25px;
+            }
+
+            .seminar-card h2 {
+                font-size: 19px;
+            }
+
+            .mode {
+                font-size: 10px;
+            }
+
+            .student-info div {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <!-- Replace logo.png with your own logo -->
+        <a href="index.html" class="logo-holder">
+            <img src="PSU.jpg" alt="Logo">
+        </a>
+
+        <nav class="navigation">
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="seminar.html" class="active">Seminars</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+        <div class="circle one"></div>
+        <div class="circle two"></div>
+
+        <div class="container">
+
+            <!-- INTRODUCTION -->
+
+            <section class="heading">
+
+                <div class="badge">
+                    ST1 • SEMINARS AND TOURS
+                </div>
+
+                <h1>
+                    Seminars I
+                    <span>Attended</span>
+                </h1>
+
+                <p>
+                    This page presents the seminars I attended as part
+                    of ST1: Seminars and Tours. These learning experiences
+                    provided information about different technologies,
+                    current trends, and important topics in Information Technology.
+                </p>
+
+                <div class="student-info">
+
+                    <div>
+                        <strong>Student:</strong>
+                        Rizza C. Moralida
+                    </div>
+
+                    <div>
+                        <strong>Activity:</strong>
+                        ST1: Seminars and Tours
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SEMINARS ================= -->
+
+            <section class="seminar-list">
+
+                <!-- SEMINAR 1 -->
+
+                <article class="seminar-card">
+
+                    <div class="card-top">
+
+                        <div class="number">
+                            01
+                        </div>
+
+                        <div class="mode">
+                            HYBRID / ONLINE
+                        </div>
+
+                    </div>
+
+                    <h2>
+                        Emerging Trends and Innovations in IT
+                    </h2>
+
+                    <p>
+                        This seminar focused on emerging technologies,
+                        innovations, and developments in Information Technology.
+                        It provided an opportunity to learn about new trends
+                        and how they continue to influence the field of IT.
+                    </p>
+
+                    <a
+                        href="https://canva.link/2fmvx1xvzppwk6c"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="view-btn"
+                    >
+                        View Seminar Info
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <!-- SEMINAR 2 -->
+
+                <article class="seminar-card">
+
+                    <div class="card-top">
+
+                        <div class="number">
+                            02
+                        </div>
+
+                        <div class="mode">
+                            HYBRID / ONLINE
+                        </div>
+
+                    </div>
+
+                    <h2>
+                        Cybersecurity
+                    </h2>
+
+                    <p>
+                        This seminar discussed cybersecurity, digital identity,
+                        online threats, and ways of protecting personal
+                        information. It highlighted the importance of
+                        awareness and responsible practices when using digital
+                        technologies.
+                    </p>
+
+                    <a
+                        href="https://canva.link/syv9zaumkxbeawo"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="view-btn"
+                    >
+                        View Seminar Info
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <!-- SEMINAR 3 -->
+
+                <article class="seminar-card">
+
+                    <div class="card-top">
+
+                        <div class="number">
+                            03
+                        </div>
+
+                        <div class="mode">
+                            HYBRID / ONLINE
+                        </div>
+
+                    </div>
+
+                    <h2>
+                        Data Analytics or Artificial Intelligence in Practice
+                    </h2>
+
+                    <p>
+                        This seminar explored the practical use of data
+                        analytics and artificial intelligence. It provided
+                        insights into how these technologies can be used
+                        to analyze information, solve problems, and support
+                        decision-making.
+                    </p>
+
+                    <a
+                        href="https://canva.link/2j3ewi7aq36ro27"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="view-btn"
+                    >
+                        View Seminar Info
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <!-- SEMINAR 4 -->
+
+                <article class="seminar-card">
+
+                    <div class="card-top">
+
+                        <div class="number">
+                            04
+                        </div>
+
+                        <div class="mode">
+                            HYBRID / ONLINE
+                        </div>
+
+                    </div>
+
+                    <h2>
+                        Cloud Computing, DevOps, and Modern IT Infrastructure
+                    </h2>
+
+                    <p>
+                        This seminar introduced cloud computing, DevOps,
+                        and modern IT infrastructure. It provided information
+                        about technologies and practices used to develop,
+                        manage, and support modern IT environments.
+                    </p>
+
+                    <a
+                        href="https://canva.link/q7aoup5eu8c2yy6"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="view-btn"
+                    >
+                        View Seminar Info
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <!-- SEMINAR 5 -->
+
+                <article class="seminar-card">
+
+                    <div class="card-top">
+
+                        <div class="number">
+                            05
+                        </div>
+
+                        <div class="mode">
+                            HYBRID / ONLINE
+                        </div>
+
+                    </div>
+
+                    <h2>
+                        Tech Entrepreneurship and Startups in IT
+                    </h2>
+
+                    <p>
+                        This seminar discussed technology entrepreneurship,
+                        startup development, innovation, and opportunities
+                        in the IT industry. It provided insights into how
+                        technology can support business ideas and innovative
+                        solutions.
+                    </p>
+
+                    <a
+                        href="https://canva.link/roj35f50z76ab22"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="view-btn"
+                    >
+                        View Seminar Info
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+            </section>
+
+
+            <!-- BACK TO HOME -->
+
+            <div class="back-container">
+
+                <a href="index.html" class="back-btn">
+                    ← Back to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+        ST1: Seminars and Tours • Rizza C. Moralida
+    </footer>
+
+</body>
+</html>
